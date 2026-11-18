@@ -21,4 +21,10 @@ export const PERMISSIONS = {
     UPDATE: ["Admin"],
     READ: ["Admin", "Manager"],
   },
+  ORDERS: {
+    CREATE: ["Admin"],
+    DELETE: ["Admin"],
+    UPDATE: ["Admin", "Manager"],
+    READ: ["Admin", "Manager"],
+  },
 };

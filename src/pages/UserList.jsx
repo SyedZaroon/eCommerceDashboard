@@ -32,6 +32,8 @@ import {
 } from "lucide-react";
 import { deleteUser, getAllUsers, updateUser } from "@/services/userService";
 import { toast } from "@/components/ui/toast"
+import { hasPermission } from "@/authentication/hasPermission";
+import { useAuth } from "@/context/AuthContext";
 
 const PAGE_SIZE = 10;
 
@@ -154,6 +156,8 @@ const toggleActiveStatus = async (userId, currentStatus) => {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <div className="space-y-6">
       {/* Header & Add User Button */}
@@ -166,11 +170,13 @@ const toggleActiveStatus = async (userId, currentStatus) => {
             Manage store users, assign roles, and monitor account statuses.
           </p>
         </div>
+        {hasPermission(user, "PRODUCTS", "CREATE") && (
         <Link to="/dashboard/adduser">
           <Button className="flex items-center gap-2">
             <Plus className="h-4 w-4" /> Add User
           </Button>
         </Link>
+        )}
       </div>
 
       {/* Search Bar */}

@@ -1,4 +1,3 @@
-
 import "./App.css";
 
 import {
@@ -25,6 +24,8 @@ import { AuthProvider } from "./context/AuthContext";
 
 import ProtectedRoute from "./authentication/ProtectedRoute";
 import PermissionRoute from "./authentication/PermissionRoute";
+import OrderList from "./pages/OrderList";
+import OrderDetails from "./pages/OrderDetails";
 
 const router = createBrowserRouter([
   // Root URL
@@ -56,10 +57,7 @@ const router = createBrowserRouter([
           {
             path: "addproduct",
             element: (
-              <PermissionRoute
-                resource="PRODUCTS"
-                action="CREATE"
-              >
+              <PermissionRoute resource="PRODUCTS" action="CREATE">
                 <AddProduct />
               </PermissionRoute>
             ),
@@ -67,10 +65,7 @@ const router = createBrowserRouter([
           {
             path: "productlist",
             element: (
-              <PermissionRoute
-                resource="PRODUCTS"
-                action="READ"
-              >
+              <PermissionRoute resource="PRODUCTS" action="READ">
                 <ProductList />
               </PermissionRoute>
             ),
@@ -78,10 +73,7 @@ const router = createBrowserRouter([
           {
             path: "editproduct/:id",
             element: (
-              <PermissionRoute
-                resource="PRODUCTS"
-                action="UPDATE"
-              >
+              <PermissionRoute resource="PRODUCTS" action="UPDATE">
                 <EditProduct />
               </PermissionRoute>
             ),
@@ -91,10 +83,7 @@ const router = createBrowserRouter([
           {
             path: "addcollection",
             element: (
-              <PermissionRoute
-                resource="COLLECTION"
-                action="CREATE"
-              >
+              <PermissionRoute resource="COLLECTION" action="CREATE">
                 <AddCollection />
               </PermissionRoute>
             ),
@@ -104,10 +93,7 @@ const router = createBrowserRouter([
           {
             path: "adduser",
             element: (
-              <PermissionRoute
-                resource="USER"
-                action="CREATE"
-              >
+              <PermissionRoute resource="USER" action="CREATE">
                 <AddUser />
               </PermissionRoute>
             ),
@@ -115,10 +101,7 @@ const router = createBrowserRouter([
           {
             path: "userlist",
             element: (
-              <PermissionRoute
-                resource="USER"
-                action="READ"
-              >
+              <PermissionRoute resource="USER" action="READ">
                 <UserList />
               </PermissionRoute>
             ),
@@ -126,11 +109,24 @@ const router = createBrowserRouter([
           {
             path: "edituser/:id",
             element: (
-              <PermissionRoute
-                resource="USER"
-                action="UPDATE"
-              >
+              <PermissionRoute resource="USER" action="UPDATE">
                 <EditUser />
+              </PermissionRoute>
+            ),
+          },
+          {
+            path: "orders",
+            element: (
+              <PermissionRoute resource="ORDERS" action="READ">
+                <OrderList />
+              </PermissionRoute>
+            ),
+          },
+          {
+            path: "orders/:id",
+            element: (
+              <PermissionRoute resource="ORDERS" action="READ">
+                <OrderDetails />
               </PermissionRoute>
             ),
           },
