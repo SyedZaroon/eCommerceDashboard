@@ -198,31 +198,45 @@ export default function OrderList() {
                   (count, item) => count + (Number(item.qty) || 0),
                   0,
                 );
+                const isRefunded =
+                  order.orderStatus === "Cancelled" &&
+                  order.paymentStatus === "Refunded";
 
                 return (
                   <TableRow key={order._id}>
                     <TableCell>
                       <Link
-                        className="font-semibold hover:underline"
+                        className={`font-semibold hover:underline ${isRefunded ? "text-muted-foreground line-through" : ""}`}
                         to={`/dashboard/orders/${encodeURIComponent(order._id)}`}
                       >
                         #{order.orderNumber || order._id}
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <div className="font-medium">{customerName}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {order.userInfo?.email || order.user?.email || "—"}
+                      <div className={`font-medium ${isRefunded ? "text-muted-foreground line-through" : ""}`}>
+                        {customerName}
                       </div>
                     </TableCell>
-                    <TableCell className="text-muted-foreground">
+                    <TableCell className={`text-muted-foreground  ${isRefunded ? "text-muted-foreground line-through" : ""}`}>
                       {formatDate(order.createdAt)}
                     </TableCell>
-                    <TableCell>
+                    <TableCell  className={`text-muted-foreground  ${isRefunded ? "text-muted-foreground line-through" : ""}`}>
                       {itemCount} {itemCount === 1 ? "item" : "items"}
                     </TableCell>
                     <TableCell className="font-medium">
-                      {formatMoney(order.totalPrice, order.currency)}
+                      {isRefunded ? (
+                        <div className="space-y-0.5">
+                          <div className="text-muted-foreground line-through">
+                            {formatMoney(
+                              order.originalTotalPrice ?? order.totalPrice,
+                              order.currency,
+                            )}
+                          </div>
+                          <div>{formatMoney(0, order.currency)}</div>
+                        </div>
+                      ) : (
+                        formatMoney(order.totalPrice, order.currency)
+                      )}
                     </TableCell>
                     <TableCell>
                       <div>{order.paymentMethod || "—"}</div>

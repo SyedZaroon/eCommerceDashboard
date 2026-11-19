@@ -117,9 +117,18 @@ export default function OrderDetails() {
     try {
       const updatedOrder = await updateOrder(id, { [field]: value });
       setOrder(updatedOrder);
+      const updatedFields = [];
+      if (updatedOrder.orderStatus !== order.orderStatus) {
+        updatedFields.push(`Order status updated to ${updatedOrder.orderStatus}`);
+      }
+      if (updatedOrder.paymentStatus !== order.paymentStatus) {
+        updatedFields.push(
+          `Payment status updated to ${updatedOrder.paymentStatus}`,
+        );
+      }
       toast.add({
         type: "success",
-        description: `${field === "orderStatus" ? "Order" : "Payment"} status updated to ${value}.`,
+        description: updatedFields.join(" | "),
       });
     } catch (error) {
       console.error(`Failed to update ${field}:`, error);
@@ -311,6 +320,23 @@ export default function OrderDetails() {
               <CardTitle>Order summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 pt-4">
+              {order.orderStatus === "Cancelled" &&
+                order.paymentStatus === "Refunded" && (
+                  <>
+                    <InfoLine label="Original order">
+                      <span className="flex items-center justify-between gap-4">
+                        <span className="text-muted-foreground">
+                          {formatDate(order.createdAt)}
+                        </span>
+                        {formatMoney(
+                          order.originalTotalPrice ?? order.totalPrice,
+                          currency,
+                        )}
+                      </span>
+                    </InfoLine>
+                    <div className="border-t" />
+                  </>
+                )}
               <InfoLine label="Items subtotal">
                 {formatMoney(order.itemsPrice, currency)}
               </InfoLine>
@@ -324,6 +350,44 @@ export default function OrderDetails() {
                   </span>
                 </InfoLine>
               </div>
+              {order.orderStatus === "Cancelled" &&
+                order.paymentStatus === "Refunded" && (
+                  <>
+                    <div className="border-t" />
+                    <InfoLine label="Paid">
+                      {formatMoney(
+                        order.originalTotalPrice ?? order.totalPrice,
+                        currency,
+                      )}
+                    </InfoLine>
+                    <InfoLine label="Refunded">
+                      <span className="flex items-center justify-between gap-4">
+                        <span className="text-muted-foreground">
+                          Reason: “{order.refundReason || "Order canceled"}”
+                        </span>
+                        -{formatMoney(
+                          order.refundedAmount ??
+                            order.originalTotalPrice ??
+                            order.totalPrice,
+                          currency,
+                        )}
+                      </span>
+                    </InfoLine>
+                    <InfoLine label="Net payment">
+                      {formatMoney(
+                        Math.max(
+                          0,
+                          (order.originalTotalPrice ?? order.totalPrice ?? 0) -
+                            (order.refundedAmount ??
+                              order.originalTotalPrice ??
+                              order.totalPrice ??
+                              0),
+                        ),
+                        currency,
+                      )}
+                    </InfoLine>
+                  </>
+                )}
             </CardContent>
           </Card>
         </div>
