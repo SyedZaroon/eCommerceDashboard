@@ -26,6 +26,7 @@ import ProtectedRoute from "./authentication/ProtectedRoute";
 import PermissionRoute from "./authentication/PermissionRoute";
 import OrderList from "./pages/OrderList";
 import OrderDetails from "./pages/OrderDetails";
+import UserOrders from "./pages/UserOrders";
 
 const router = createBrowserRouter([
   // Root URL
@@ -103,6 +104,14 @@ const router = createBrowserRouter([
             element: (
               <PermissionRoute resource="USER" action="READ">
                 <UserList />
+              </PermissionRoute>
+            ),
+          },
+          {
+            path: "users/:userId/orders",
+            element: (
+              <PermissionRoute resource="USER" action="READ">
+                <UserOrders />
               </PermissionRoute>
             ),
           },

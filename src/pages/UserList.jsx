@@ -29,6 +29,7 @@ import {
   ArrowUpDown,
   ChevronLeft,
   ChevronRight,
+  ClipboardList,
 } from "lucide-react";
 import { deleteUser, getAllUsers, updateUser } from "@/services/userService";
 import { toast } from "@/components/ui/toast"
@@ -240,6 +241,17 @@ const toggleActiveStatus = async (userId, currentStatus) => {
                     {user.joinedDate.split("T")[0]}
                   </TableCell>
                   <TableCell className="text-right">
+                    <Button
+                      render={
+                        <Link to={`/dashboard/users/${encodeURIComponent(user._id)}/orders`} />
+                      }
+                      variant="ghost"
+                      size="sm"
+                      aria-label={`View ${user.name}'s order history`}
+                    >
+                      <ClipboardList className="h-4 w-4" />
+                      Orders
+                    </Button>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">

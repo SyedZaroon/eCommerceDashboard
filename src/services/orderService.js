@@ -12,6 +12,14 @@ export const getOrderById = async (orderId) => {
   return response.data.data;
 };
 
+export const getOrdersByUser = async (userId, page = 1, limit = 10) => {
+  const response = await api.get(
+    `/orders/user/${encodeURIComponent(userId)}`,
+    { params: { page, limit } },
+  );
+  return response.data.data;
+};
+
 export const updateOrder = async (orderId, updates) => {
   const response = await api.put(
     `/orders/${encodeURIComponent(orderId)}`,
