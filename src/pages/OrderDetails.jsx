@@ -343,6 +343,13 @@ export default function OrderDetails() {
               <InfoLine label="Shipping">
                 {formatMoney(order.shippingPrice, currency)}
               </InfoLine>
+              <InfoLine label="Shipping method">
+                {order.shippingMethod === "next_day"
+                  ? "Next Day Delivery"
+                  : Number(order.shippingPrice) === 0
+                    ? "Free Shipping"
+                    : "Standard Delivery"}
+              </InfoLine>
               <div className="border-t pt-3">
                 <InfoLine label="Total">
                   <span className="text-base">
